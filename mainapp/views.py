@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Product, Category
 
 
-def index(request):
+def main(request):
     context = {
         'title': 'My_market'
     }
@@ -17,5 +17,17 @@ def products(request):
         'title': title,
         'list_products ': list_products
     }
-
     return render(request, 'mainapp/products.html', context)
+
+
+def product(request, pk):
+    product = Product.objects.get(pk=pk)
+
+    title = f'{product.name}'
+
+    context = {
+        'title': title,
+        'product': get_object_or_404(Product, pk=pk)
+    }
+
+    return render(request, 'mainapp/product_details.html', context)
