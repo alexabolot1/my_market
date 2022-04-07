@@ -1,14 +1,10 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
 
-{% block title %}
-    <title>Контакты</title>
-{% endblock %}
-
 {% block content %}
     <div class="hero">
         <div class="header clearfix">
-            <a href="index.html" class="logo"></a>
+            <a href="{% url 'mainapp:index' %}" class="logo"></a>
             <ul class="menu">
                 <li><a href="{% url 'mainapp:index' %}" class="active">домой</a></li>
                 <li><a href="{% url 'mainapp:products' %}">продукты</a></li>
@@ -70,6 +66,4 @@
             </div>
         </div>
     </div>
-
-    <div class="clr"></div>
 {% endblock %}

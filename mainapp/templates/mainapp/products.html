@@ -1,15 +1,10 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
 
-{% block title %}
-    <title>Продукты</title>
-{% endblock %}
-
 {% block content %}
-
     <div class="hero-white">
         <div class="header clearfix">
-            <a href="index.html" class="logo"></a>
+            <a href="{% url 'mainapp:index' %}" class="logo"></a>
             <ul class="menu">
                 <li><a href="{% url 'mainapp:index' %}" class="active">домой</a></li>
                 <li><a href="{% url 'mainapp:products' %}">продукты</a></li>
@@ -19,7 +14,6 @@
             <a href="#" class="basket"></a>
         </div>
     </div>
-
     <div class="details">
         <div class="links clearfix">
             <ul class="links-menu">
@@ -110,7 +104,4 @@
             </div>
         </div>
     </div>
-
-    <div class="clr"></div>
-
 {% endblock %}

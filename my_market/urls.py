@@ -6,6 +6,5 @@ import mainapp.views as mainapp
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', mainapp.main, name='main'),
-    path('products/', include('mainapp.urls', namespace='acc'))
+    path('', include('mainapp.urls', namespace='acc'))
 ]
