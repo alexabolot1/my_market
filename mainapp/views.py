@@ -8,6 +8,11 @@ def main(request):
     }
     return render(request, 'mainapp/index.html', context)
 
+def contacts(request):
+    context = {
+        'title': 'Контакты'
+    }
+    return render(request, 'mainapp/contacts.html', context)
 
 def products(request):
     title = 'Продукты'
