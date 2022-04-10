@@ -8,11 +8,13 @@ def main(request):
     }
     return render(request, 'mainapp/index.html', context)
 
+
 def contacts(request):
     context = {
         'title': 'Контакты'
     }
     return render(request, 'mainapp/contacts.html', context)
+
 
 def products(request):
     title = 'Продукты'
@@ -26,10 +28,8 @@ def products(request):
 
 
 def product(request, pk):
-    product = Product.objects.get(pk=pk)
-
-    title = f'{product.name}'
-
+    product_item = Product.objects.get(pk=pk)
+    title = f'{product_item.name}'
     context = {
         'title': title,
         'product': get_object_or_404(Product, pk=pk)
