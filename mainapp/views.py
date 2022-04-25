@@ -35,10 +35,12 @@ def contacts(request):
 def products(request):
     title = 'Продукты'
     list_products = Product.objects.filter(is_active=True)
+    list_categories = Category.objects.filter(is_active=True)
 
     context = {
         'title': title,
-        'list_products ': list_products
+        'list_products ': list_products,
+        'list_categories': list_categories
     }
     return render(request, 'mainapp/products.html', context)
 
