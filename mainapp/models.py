@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Category(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.CharField(verbose_name='имя', max_length=40, db_index=True)
     description = models.TextField(verbose_name='описание', blank=True)
     is_active = models.BooleanField(verbose_name='активна', default=True)
@@ -15,7 +14,6 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    id = models.AutoField(primary_key=True)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     name = models.CharField(verbose_name='имя', max_length=40, db_index=True)
     description = models.TextField(verbose_name='описание', blank=True)
