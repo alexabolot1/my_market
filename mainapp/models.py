@@ -7,7 +7,9 @@ class Category(models.Model):
     is_active = models.BooleanField(verbose_name='активна', default=True)
 
     class Meta:
-        ordering = ('name',)
+        verbose_name = 'категория'
+        verbose_name_plural = 'категории'
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -19,15 +21,16 @@ class Product(models.Model):
     description = models.TextField(verbose_name='описание', blank=True)
     image = models.ImageField(verbose_name='изображение', upload_to='products/%Y/%m/%d', blank=True)
     price = models.DecimalField(verbose_name='цена', max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField(verbose_name='количество')
+    stock = models.PositiveIntegerField(verbose_name='количество', default=0)
     is_active = models.BooleanField(verbose_name='активна', default=True)
 
     class Meta:
-        ordering = ('name',)
+        verbose_name = 'продукт'
+        verbose_name_plural = 'продукты'
 
     @staticmethod
     def get_items():
         return Product.objects.filter(is_active=True).order_by('name')
 
     def __str__(self):
-        return self.name
+        return f'{self.name} ({self.category.name})'
