@@ -45,6 +45,10 @@ def products(request):
     return render(request, 'mainapp/products.html', context)
 
 
+def category(request, pk):
+    pass
+
+
 # def product(request, pk):
 #     product_item = Product.objects.get(pk=pk)
 #     title = f'{product_item.name}'
