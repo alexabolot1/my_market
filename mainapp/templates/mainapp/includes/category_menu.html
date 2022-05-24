@@ -1,7 +1,7 @@
 <div class="links clearfix">
     <ul class="links-menu">
         <li>
-            <a href="#">все</a>
+            <a href="{% url 'main:category' 0 %}">все</a>
         </li>
         {% for category in list_categories %}
             <li>

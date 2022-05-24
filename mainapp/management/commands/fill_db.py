@@ -10,7 +10,7 @@ def load_from_json(file_name):
 
 
 class Command(BaseCommand):
-    help = 'Fill data in db'
+    help = 'Заполнение данными категорий и продуктов'
 
     def handle(self, *args, **options):
         items = load_from_json('mainapp/json/categories.json')

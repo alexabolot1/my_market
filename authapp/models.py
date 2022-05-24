@@ -6,4 +6,4 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     age = models.PositiveIntegerField('возраст', null=True)
-    avatar = models.ImageField(upload_to='avatars', blank=True)
+    avatar = models.ImageField(upload_to='user_photos', blank=True)
