@@ -10,15 +10,7 @@ class UserLoginForm(AuthenticationForm):
             field.widget.attrs['class'] = f'form-control {field_name}'
 
 
-class AgeValidatorMixin:
-    def age_validator(self):
-        age = self.cleaned_data.get('age')
-        if age and age < 18:
-            raise forms.ValidationError('Регистрация в сервисе только с 18 лет!')
-        return age
-
-
-class UserCreateForm(AgeValidatorMixin, UserCreationForm):
+class UserCreateForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ('username', 'first_name', 'last_name', 'password1', 'password2', 'email', 'age')
@@ -28,3 +20,9 @@ class UserCreateForm(AgeValidatorMixin, UserCreationForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = f'form-control {field_name}'
             field.help_text = ''
+
+    def clean_age(self):
+        age = self.cleaned_data.get('age')
+        if age and age < 18:
+            raise forms.ValidationError('Вы слишком молоды!')
+        return age
