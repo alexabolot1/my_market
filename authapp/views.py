@@ -1,8 +1,12 @@
 from django.contrib import auth
+from django.forms import forms
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from authapp.forms import UserLoginForm, UserCreateForm
+from django.views.generic import UpdateView
+
+from authapp.forms import UserLoginForm, UserCreateForm, UserUpdateForm
+from authapp.models import CustomUser
 
 
 def login(request):
@@ -44,3 +48,23 @@ def register(request):
         'form': form,
     }
     return render(request, 'authapp/register.html', context)
+
+
+class UserUpdate(UpdateView):
+    form_class = UserUpdateForm
+    template_name = 'authapp/update.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'редактирование пользователя'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = UserUpdateForm(data=request.POST, files=request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+        return redirect('authapp:update', self.request.user.id)
+
+    def get_object(self, *args, **kwargs):
+        return get_object_or_404(CustomUser, pk=self.request.user.pk)
+

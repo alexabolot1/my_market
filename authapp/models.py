@@ -5,6 +5,5 @@ from django.db import models
 # Create your models here.
 
 class CustomUser(AbstractUser):
-    age = models.PositiveIntegerField(verbose_name='возраст', null=True)
     avatar = models.ImageField(upload_to='user_photos/', blank=True, verbose_name='аватар')
-
+    age = models.PositiveIntegerField(null=True, verbose_name='возраст')

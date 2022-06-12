@@ -6,4 +6,4 @@ class Command(BaseCommand):
     help = u'Create superuser'
 
     def handle(self, *args, **kwargs):
-        CustomUser.objects.create_superuser(username='alex', email='alex@mail.com', password='django', age='18')
+        CustomUser.objects.create_superuser(username='alex', email='alex@mail.com', password='django')

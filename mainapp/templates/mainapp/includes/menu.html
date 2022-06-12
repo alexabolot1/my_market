@@ -5,7 +5,7 @@
         <li><a href="{% url 'mainapp:products' %}">продукты</a></li>
         <li><a href="{% url 'mainapp:contacts' %}">контакты</a></li>
         {% if user.is_authenticated%}
-            <li><a href="#">{{ user.username }}</a></li>
+            <li><a href="{% url 'auth:update' pk=user.pk %}">{{ user.username }}</a></li>
             <li><a href="{% url 'auth:logout' %}">выйти</a></li>
         {% else %}
             <li><a href="{% url 'auth:login' %}">войти</a></li>
