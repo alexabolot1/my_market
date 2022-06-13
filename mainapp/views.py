@@ -39,21 +39,23 @@ def products(request):
 
     context = {
         'title': title,
-        'list_products ': list_products,
-        'list_categories': list_categories
+        'products ': list_products,
+        'categories': list_categories
     }
     return render(request, 'mainapp/products.html', context)
 
 
 def category(request, pk):
-    pass
-
-
-# def product(request, pk):
-#     product_item = Product.objects.get(pk=pk)
-#     title = f'{product_item.name}'
-#     context = {
-#         'title': title,
-#         'product': get_object_or_404(Product, pk=pk)
-#     }
-#     return render(request, 'mainapp/product_details.html', context)
+    if pk == 0:
+        cat = {'pk': 0, 'name': 'все'}
+        prod = Product.objects.all()
+    else:
+        cat = get_object_or_404(Category, pk=pk)
+        prod = Product.objects.filter(category=cat)
+    context = {
+        'title': 'товары категории',
+        'categories': Category.objects.all(),
+        'category': cat,
+        'products': prod,
+    }
+    return render(request, 'mainapp/category_products.html', context)
