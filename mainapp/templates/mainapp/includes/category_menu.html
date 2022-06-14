@@ -1,0 +1,12 @@
+<div class="links clearfix">
+    <ul class="links-menu">
+        <li>
+            <a href="{% url 'mainapp:category' 0 %}">все</a>
+        </li>
+        {% for item in categories %}
+            <li>
+                <a href="{% url 'mainapp:category' item.pk %}">{{ item.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
