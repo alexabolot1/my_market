@@ -3,14 +3,14 @@
     <ul class="menu">
         <li>
             <a href="{% url 'mainapp:index' %}"
-               {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>домой</a>
+               class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">домой</a>
         </li>
         <li>
             <a href="{% url 'mainapp:products' %}"
-               {% if request.resolver_match.url_name == 'products' %}class="active"{% endif %}>продукты</a>
+               class="{% if request.resolver_match.url_name == 'products' or request.resolver_match.url_name == 'category' %}active{% endif %}">продукты</a>
         </li>
         <li><a href="{% url 'mainapp:contacts' %}"
-               {% if request.resolver_match.url_name == 'contacts' %}class="active"{% endif %}>контакты</a>
+               class="{% if request.resolver_match.url_name == 'contacts' %}active{% endif %}">контакты</a>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'auth:update' pk=user.pk %}">{{ user.username }}</a></li>
                 <li><a href="{% url 'auth:logout' %}">выйти</a></li>
