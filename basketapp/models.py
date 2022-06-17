@@ -17,3 +17,7 @@ class BasketItem(models.Model):
     class Meta:
         verbose_name = 'корзина'
         verbose_name_plural = 'корзины'
+
+    @property
+    def product_cost(self):
+        return self.product.price * self.quantity

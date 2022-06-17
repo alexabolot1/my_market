@@ -1,5 +1,19 @@
+import random
+
 from django.shortcuts import render, get_object_or_404
 from .models import Product, Category
+
+
+def get_category_menu():
+    return Category.objects.filter(is_active=True)
+
+
+def get_hot_product():
+    return random.choice(Product.objects.all())
+
+
+def get_same_products(hot_product):
+    return Product.objects.filter(category=hot_product.category).exclude(id=hot_product.id)[:3]
 
 
 def index(request):
@@ -12,9 +26,9 @@ def index(request):
 def contacts(request):
     locations = [
         {'city': 'Москва',
-        'phone': '+7-888-213-1234',
-        'email': 'info.msk@mymarket.ru',
-        'address': 'МКАД'},
+         'phone': '+7-888-213-1234',
+         'email': 'info.msk@mymarket.ru',
+         'address': 'МКАД'},
         {'city': 'Екатеринбург',
          'phone': '+7-343-243-1232',
          'email': 'info.ekb@mymarket.ru',
@@ -33,14 +47,14 @@ def contacts(request):
 
 
 def products(request):
-    title = 'Продукты'
-    list_products = Product.objects.filter(is_active=True)
-    list_categories = Category.objects.filter(is_active=True)
+
+    hot_product = get_hot_product()
 
     context = {
-        'title': title,
-        'products ': list_products,
-        'categories': list_categories
+        'title': 'Продукты',
+        'hot_product': hot_product,
+        'categories': get_category_menu(),
+        'same_products': get_same_products(hot_product)
     }
     return render(request, 'mainapp/products.html', context)
 

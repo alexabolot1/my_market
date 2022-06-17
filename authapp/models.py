@@ -9,7 +9,7 @@ class CustomUser(AbstractUser):
     age = models.PositiveIntegerField(null=True, verbose_name='возраст')
 
     def basket_price(self):
-        return sum(item.product.price for item in self.basket.all())
+        return sum(item.product_cost for item in self.basket.all())
 
     def basket_quantity(self):
         return sum(item.quantity for item in self.basket.all())
