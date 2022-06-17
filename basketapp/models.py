@@ -4,7 +4,7 @@ from django.db import models
 from mainapp.models import Product
 
 
-class Basket(models.Model):
+class BasketItem(models.Model):
     user = models.ForeignKey(get_user_model(),
                              on_delete=models.CASCADE,
                              related_name='basket',

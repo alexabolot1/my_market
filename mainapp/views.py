@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Product, Category
 
 
-def main(request):
+def index(request):
     context = {
         'title': 'Магазин'
     }

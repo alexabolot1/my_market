@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from basketapp.models import Basket
+from basketapp.models import BasketItem
 
-admin.site.register(Basket)
+admin.site.register(BasketItem)
