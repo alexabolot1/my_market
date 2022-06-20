@@ -63,7 +63,7 @@ class UserUpdate(UpdateView):
         form = UserUpdateForm(data=request.POST, files=request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-        return redirect('authapp:update', self.request.user.id)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     def get_object(self, *args, **kwargs):
         return get_object_or_404(CustomUser, pk=self.request.user.pk)

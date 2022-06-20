@@ -29,6 +29,5 @@ def basket_add(request, product_pk):
 def basket_remove(request, basket_item_pk):
     item = get_object_or_404(BasketItem, pk=basket_item_pk)
     item.delete()
-   # BasketItem.objects.filter(pk=basket_item_pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

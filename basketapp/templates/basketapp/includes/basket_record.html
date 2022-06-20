@@ -8,7 +8,7 @@
        value="{{ item.quantity }}">
 <span class="product_cost">{{ item.product_cost }}&nbspруб</span>
 
-<a href="{% url 'basket:remove' pk=item.pk %}"
+<a href="{% url 'basket:remove' item.pk %}"
    class="btn btn-round">
     удалить
 </a>
