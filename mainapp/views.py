@@ -47,9 +47,7 @@ def contacts(request):
 
 
 def products(request):
-
     hot_product = get_hot_product()
-
     context = {
         'title': 'Продукты',
         'hot_product': hot_product,
@@ -73,3 +71,11 @@ def category(request, pk):
         'products': prod,
     }
     return render(request, 'mainapp/category_products.html', context)
+
+
+def product_item(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    context = {'product': product,
+               'title': product.name,
+               'categories': get_category_menu()}
+    return render(request, 'mainapp/product_item.html', context)

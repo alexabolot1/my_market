@@ -9,7 +9,7 @@
         {% for item in categories %}
             <li>
                 <a href="{% url 'mainapp:category' item.pk %}"
-                   class="{% if request.resolver_match.kwargs.pk == item.pk %}
+                   class="{% if request.resolver_match.kwargs.pk == item.pk and request.resolver_match.url_name != 'product_item'%}
                    active{% endif %}"
                 >{{ item.name }}</a>
             </li>
