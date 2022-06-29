@@ -275,12 +275,7 @@ html, body {
 }
 
 .users_list a {
-    color: #555;
     text-decoration: none;
-}
-
-.users_list .new_user {
-    margin-left: 190px;
 }
 
 .users_list button {
