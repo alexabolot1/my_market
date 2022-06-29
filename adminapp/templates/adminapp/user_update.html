@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block container %}
+    {% if request.resolver_match.url_name == 'user_update' %}
+            <div class="h2 text-center head">Редактирование пользователя</div>>
+    {% else %}
+        <div class="h2 text-center head">Создание пользователя</div>>
+    {% endif %}
     <div class="login">
         <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}

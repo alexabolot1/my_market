@@ -17,6 +17,7 @@ def user_read(request):
     return render(request, 'adminapp/user_read.html', context)
 
 
+@user_passes_test(lambda user: user.is_superuser)
 def user_create(request):
     if request.method == 'POST':
         form = AdminUserCreateForm(request.POST, request.FILES)
@@ -31,6 +32,22 @@ def user_create(request):
     return render(request, 'adminapp/user_update.html', context)
 
 
+@user_passes_test(lambda user: user.is_superuser)
+def user_delete(request, user_pk):
+    user = get_object_or_404(CustomUser, pk=user_pk)
+    if not user.is_active or request.method == 'POST':
+        if user.is_active:
+            user.is_active = False
+        else:
+            user.is_active = True
+        user.save()
+        return HttpResponseRedirect(reverse('adminapp:user_read'))
+    context = {'title': 'Админка | Удаление пользователя',
+               'user_to_delete': user}
+    return render(request, 'adminapp/user_delete.html', context)
+
+
+@user_passes_test(lambda user: user.is_superuser)
 def user_update(request, user_pk):
     user = get_object_or_404(CustomUser, pk=user_pk)
     if request.method == 'POST':
