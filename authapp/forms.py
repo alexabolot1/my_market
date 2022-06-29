@@ -3,6 +3,14 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, User
 from django.forms import forms, HiddenInput
 
 
+class AgeValidateMixin:
+    def clean_age(self):
+        age = self.cleaned_data.get('age')
+        if age and age < 18:
+            raise forms.ValidationError('Вы слишком молоды!')
+        return age
+
+
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -10,7 +18,7 @@ class UserLoginForm(AuthenticationForm):
             field.widget.attrs['class'] = f'form-control {field_name}'
 
 
-class UserCreateForm(UserCreationForm):
+class UserCreateForm(AgeValidateMixin, UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ('username', 'first_name', 'last_name', 'password1', 'password2', 'email', 'age')
@@ -21,14 +29,8 @@ class UserCreateForm(UserCreationForm):
             field.widget.attrs['class'] = f'form-control {field_name}'
             field.help_text = ''
 
-    def clean_age(self):
-        age = self.cleaned_data.get('age')
-        if age and age < 18:
-            raise forms.ValidationError('Вы слишком молоды!')
-        return age
 
-
-class UserUpdateForm(UserChangeForm):
+class UserUpdateForm(AgeValidateMixin, UserChangeForm):
     class Meta:
         model = get_user_model()
         fields = ('username', 'first_name', 'last_name', 'password', 'email', 'age')
@@ -41,9 +43,3 @@ class UserUpdateForm(UserChangeForm):
                 continue
             field.widget.attrs['class'] = f'form-control {field_name}'
             field.help_text = ''
-
-    def clean_age(self):
-        age = self.cleaned_data.get('age')
-        if age and age < 18:
-            raise forms.ValidationError('Вы слишком молоды!')
-        return age

@@ -9,9 +9,13 @@
         <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <input class="form-control" type="submit" value="сохранить">
+            {% if request.resolver_match.url_name == 'user_update' %}
+                <input class="form-control" type="submit" value="сохранить">
+            {% else %}
+                <input class="form-control" type="submit" value="создать">
+            {% endif %}
         </form>
-        <a href="{% url 'new_admin:index' %}"
+        <a href="{% url 'adminapp:user_read' %}"
            class="btn btn-primary form-control last">
             к списку пользователей
         </a>

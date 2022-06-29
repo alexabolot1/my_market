@@ -571,7 +571,7 @@ html, body {
     overflow: hidden;
     width: 28em;
     min-width: 500px;
-    margin: 100px auto;
+    margin: 50px auto;
        
     position: relative;
     display: block;
@@ -605,6 +605,10 @@ html, body {
 
 .login form {
     margin-bottom: 10px;
+}
+
+.login form p {
+    margin: 10px;
 }
 
 .login div.user_avatar {

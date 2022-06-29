@@ -13,7 +13,7 @@
                     {% else %}
                         Пользователь
                     {% endif %}
-                    <a href="#"
+                    <a href="{% url 'adminapp:user_update' shop_user.id %}"
                        class="btn btn-primary">
                         редактировать
                     </a>
@@ -24,14 +24,12 @@
                 </div>
                 <div class="user_name">
                     <p><strong>{{ shop_user.username }}</strong></p>
-                    <p>
-                        {% if shop_user.first_name %}
-                            <b>{{ shop_user.first_name|capfirst }}</b>
-                            {% if shop_user.last_name %}
-                                <p>{{ shop_user.last_name|capfirst }}</p>
-                            {% endif %}
-                        {% endif %}
-                    </p>
+                    {% if shop_user.first_name %}
+                        <p>{{ shop_user.first_name|capfirst }}</p>
+                    {% endif %}
+                    {% if shop_user.last_name %}
+                        <p>{{ shop_user.last_name|capfirst }}</p>
+                    {% endif %}
                 </div>
                 <div class="user_age">
                     Возраст:<br>
@@ -51,7 +49,7 @@
                 </div>
             </div>
         {% endfor %}
-        <a href="{#% url 'myadmin:user_create' %#}" class="btn btn-success">
+        <a href="{% url 'adminapp:user_create' %}" class="btn btn-success">
             новый пользователь
         </a>
     </div>
