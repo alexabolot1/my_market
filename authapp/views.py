@@ -2,7 +2,7 @@ from django.contrib import auth
 from django.forms import forms
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView
 
 from authapp.forms import UserLoginForm, UserCreateForm, UserUpdateForm
@@ -23,7 +23,7 @@ def login(request):
         form = UserLoginForm()
 
     context = {
-        'page_title': 'авторизация',
+        'title': 'авторизация',
         'form': form,
     }
     return render(request, 'authapp/login.html', context)
@@ -44,7 +44,7 @@ def register(request):
         form = UserCreateForm()
 
     context = {
-        'page_title': 'регистрация',
+        'title': 'регистрация',
         'form': form,
     }
     return render(request, 'authapp/register.html', context)
@@ -52,19 +52,10 @@ def register(request):
 
 class UserUpdate(UpdateView):
     form_class = UserUpdateForm
-    template_name = 'authapp/update.html'
+    model = CustomUser
+    success_url = reverse_lazy('mainapp:index')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_title'] = 'редактирование пользователя'
+        context['title'] = 'редактирование пользователя'
         return context
-
-    def post(self, request, *args, **kwargs):
-        form = UserUpdateForm(data=request.POST, files=request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-    def get_object(self, *args, **kwargs):
-        return get_object_or_404(CustomUser, pk=self.request.user.pk)
-

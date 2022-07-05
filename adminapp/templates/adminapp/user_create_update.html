@@ -4,7 +4,7 @@
 {% block menu %}
 {% endblock %}
 
-{% block container %}
+{% block content %}
     {% if request.resolver_match.url_name == 'user_update' %}
             <div class="h2 text-center head">Редактирование пользователя</div>>
     {% else %}
@@ -20,7 +20,7 @@
                 <input class="form-control" type="submit" value="создать">
             {% endif %}
         </form>
-        <a href="{% url 'adminapp:user_read' %}"
+        <a href="{% url 'adminapp:users_read' %}"
            class="btn btn-primary form-control last">
             к списку пользователей
         </a>

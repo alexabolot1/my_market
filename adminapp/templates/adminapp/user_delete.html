@@ -4,7 +4,7 @@
 {% block menu %}
 {% endblock %}
 
-{% block container %}
+{% block content %}
     <div class="user_delete">
         Уверены, что хотите удалить <b>{{ user_to_delete.username }}
         {% if user_to_delete.first_name %}
@@ -17,7 +17,7 @@
             {% csrf_token %}
             <input class="btn btn-danger" type="submit" value="удалить">
         </form>
-        <a href="{% url 'adminapp:user_read' %}" class="btn btn-success">
+        <a href="{% url 'adminapp:users_read' %}" class="btn btn-success">
             отмена
         </a>
     </div>

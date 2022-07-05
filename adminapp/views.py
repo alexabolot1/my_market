@@ -1,62 +1,76 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse, reverse_lazy
 
 # Create your views here.
-from django.urls import reverse
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
-from adminapp.forms import AdminUserUpdateForm, AdminUserCreateForm
+from adminapp.forms import AdminUserUpdateForm, AdminUserCreateForm, CategoryCreateForm
 from authapp.models import CustomUser
+from mainapp.models import Category
 
 
-@user_passes_test(lambda user: user.is_superuser)
-def user_read(request):
-    all_users = CustomUser.objects.all()
-    context = {'title': 'Админка | Все пользователи',
-               'all_users': all_users}
-    return render(request, 'adminapp/user_read.html', context)
+# Представления для работы с пользователями
+class CustomUserAdminRead(ListView):
+    model = CustomUser
 
 
-@user_passes_test(lambda user: user.is_superuser)
-def user_create(request):
-    if request.method == 'POST':
-        form = AdminUserCreateForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('adminapp:user_read'))
-    else:
-        form = AdminUserCreateForm()
-
-    context = {'title': 'Админка | Создание пользователя',
-               'form': form}
-    return render(request, 'adminapp/user_update.html', context)
+class CustomUserAdminCreate(CreateView):
+    model = CustomUser
+    form_class = AdminUserCreateForm
+    success_url = reverse_lazy('adminapp:users_read')
+    template_name = 'adminapp/user_create_update.html'
 
 
-@user_passes_test(lambda user: user.is_superuser)
-def user_delete(request, user_pk):
-    user = get_object_or_404(CustomUser, pk=user_pk)
-    if not user.is_active or request.method == 'POST':
-        if user.is_active:
-            user.is_active = False
+class CustomUserAdminUpdate(UpdateView):
+    model = CustomUser
+    form_class = AdminUserUpdateForm
+    success_url = reverse_lazy('adminapp:users_read')
+    template_name = 'adminapp/user_create_update.html'
+
+
+class CustomUserAdminDelete(DeleteView):
+    model = CustomUser
+    success_url = reverse_lazy('adminapp:users_read')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.is_active:
+            self.object.is_active = False
         else:
-            user.is_active = True
-        user.save()
-        return HttpResponseRedirect(reverse('adminapp:user_read'))
-    context = {'title': 'Админка | Удаление пользователя',
-               'user_to_delete': user}
-    return render(request, 'adminapp/user_delete.html', context)
+            self.object.is_active = True
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
-@user_passes_test(lambda user: user.is_superuser)
-def user_update(request, user_pk):
-    user = get_object_or_404(CustomUser, pk=user_pk)
-    if request.method == 'POST':
-        form = AdminUserUpdateForm(request.POST, request.FILES, instance=user)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('adminapp:user_read'))
-    else:
-        form = AdminUserUpdateForm(instance=user)
-    context = {'title': 'Админка | Редактирование пользователя',
-               'form': form}
-    return render(request, 'adminapp/user_update.html', context)
+# @user_passes_test(lambda user: user.is_superuser)
+# def user_delete(request, user_pk):
+#     user = get_object_or_404(CustomUser, pk=user_pk)
+#     if not user.is_active or request.method == 'POST':
+#         if user.is_active:
+#             user.is_active = False
+#         else:
+#             user.is_active = True
+#         user.save()
+#         return HttpResponseRedirect(reverse('adminapp:users_read'))
+#     context = {'title': 'Админка | Удаление пользователя',
+#                'user_to_delete': user}
+#     return render(request, 'adminapp/user_delete.html', context)
+
+
+# Представления для работы с категориями
+class CategoryRead(ListView):
+    model = Category
+
+
+class CategoryCreate(CreateView):
+    model = Category
+    form_class = CategoryCreateForm
+    success_url = reverse_lazy('adminapp:categories_read')
+
+
+class CategoryUpdate(UpdateView):
+    model = Category
+    form_class = CategoryCreateForm
+    success_url = reverse_lazy('adminapp:categories_read')

@@ -33,7 +33,7 @@ class UserCreateForm(AgeValidateMixin, UserCreationForm):
 class UserUpdateForm(AgeValidateMixin, UserChangeForm):
     class Meta:
         model = get_user_model()
-        fields = ('username', 'first_name', 'last_name', 'password', 'email', 'age')
+        fields = ('username', 'first_name', 'last_name', 'avatar', 'password', 'email', 'age')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

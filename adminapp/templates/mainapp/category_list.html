@@ -1,15 +1,12 @@
 {% extends 'adminapp/base.html' %}
 {% load static %}
 
-{% block container %}
+{% block content %}
     <div class="users_list">
-        <a href="{#% url 'myadmin:user_create' %#}" class="btn btn-primary new_user">
-            новая категория
-        </a>
         {% for category in category_list %}
             <div class="user_record {% if not category.is_active %}not_active{% endif %}">
                 <div class="user_role">
-                    <a href="{#% url 'myadmin:user_update' category.pk %#}"
+                    <a href="{% url 'adminapp:category_update' category.pk %}"
                        class="btn btn-primary">
                         редактировать
                     </a>
@@ -26,5 +23,8 @@
                 </div>
             </div>
         {% endfor %}
+        <a href="{% url 'adminapp:category_create' %}" class="btn btn-success">
+            новая категория
+        </a>
     </div>
 {% endblock %}

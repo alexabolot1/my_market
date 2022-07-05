@@ -1,9 +1,9 @@
 {% extends 'adminapp/base.html' %}
 {% load static %}
 
-{% block container %}
+{% block content %}
     <div class="users_list">
-        {% for shop_user in all_users %}
+        {% for shop_user in object_list %}
             <div class="user_record {% if not shop_user.is_active %}not_active{% endif %}">
                 <img src="/media/{{ shop_user.avatar|default:"user_photos/default.png" }}"
                      alt="{{ shop_user.username }}">
@@ -13,14 +13,14 @@
                     {% else %}
                         Пользователь
                     {% endif %}
-                    <a href="{% url 'adminapp:user_update' shop_user.id %}"
-                       class="btn btn-primary">
-                        редактировать
-                    </a>
                     {% if shop_user.is_active %}
                         <a href="{% url 'adminapp:user_delete' shop_user.id %}"
                            class="btn btn-danger">
                             удалить
+                        </a>
+                        <a href="{% url 'adminapp:user_update' shop_user.id %}"
+                           class="btn btn-primary">
+                            редактировать
                         </a>
                     {% else %}
                         <a href="{% url 'adminapp:user_delete' shop_user.id %}"
