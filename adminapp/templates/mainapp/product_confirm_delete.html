@@ -1,0 +1,26 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block menu %}
+{% endblock %}
+
+{% block content %}
+    <div class="user_delete">
+        {% if object.is_active %}
+            Уверены, что хотите удалить продукт <b>{{ object.name }}</b>?
+            <form method="post">
+                {% csrf_token %}
+                <input class="btn btn-danger" type="submit" value="удалить">
+            </form>
+        {% else %}
+            Уверены, что хотите восстановить продукт <b>{{ object.name }}</b>?
+            <form method="post">
+                {% csrf_token %}
+                <input class="btn btn-success" type="submit" value="Восстановить">
+            </form>
+        {% endif %}
+        <a href="{% url 'adminapp:products_read' %}" class="btn btn-info">
+            отмена
+        </a>
+    </div>
+{% endblock %}

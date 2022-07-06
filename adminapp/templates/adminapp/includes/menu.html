@@ -6,6 +6,9 @@
         <a href="{% url 'adminapp:users_read' %}">пользователи</a>
     </li>
     <li>
-        <a href="{% url 'adminapp:categories_read' %}">категории{% if category %}: {{ category.name }}{% endif %}</a>
+        <a href="{% url 'adminapp:categories_read' %}">категории</a>
+    </li>
+    <li>
+        <a href="{% url 'adminapp:products_read' %}">продукты</a>
     </li>
 </ul>

@@ -1,10 +1,10 @@
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 # Create your views here.
-from adminapp.forms import AdminUserUpdateForm, AdminUserCreateForm, CategoryCreateForm
+from adminapp.forms import AdminUserUpdateForm, AdminUserCreateForm, AdminCategoryCreateForm, AdminProductForm
 from adminapp.mixin import DataMixin, SuperUserOnlyMixin, DeleteObjectMixin
 from authapp.models import CustomUser
-from mainapp.models import Category
+from mainapp.models import Category, Product
 
 
 # CRUD для пользователей
@@ -36,26 +36,57 @@ class CustomUserAdminDelete(SuperUserOnlyMixin, DataMixin, DeleteObjectMixin, De
 
 
 # CRUD для категорий
-class CategoryRead(SuperUserOnlyMixin, DataMixin, ListView):
+class CategoryAdminRead(SuperUserOnlyMixin, DataMixin, ListView):
     model = Category
     title = 'Админка|Категории'
 
 
-class CategoryCreate(SuperUserOnlyMixin, DataMixin, CreateView):
+class CategoryAdminCreate(SuperUserOnlyMixin, DataMixin, CreateView):
     model = Category
-    form_class = CategoryCreateForm
+    form_class = AdminCategoryCreateForm
     success_url = reverse_lazy('adminapp:categories_read')
     title = 'Админка|Создание категории'
 
 
-class CategoryUpdate(SuperUserOnlyMixin, DataMixin, UpdateView):
+class CategoryAdminUpdate(SuperUserOnlyMixin, DataMixin, UpdateView):
     model = Category
-    form_class = CategoryCreateForm
+    form_class = AdminCategoryCreateForm
     success_url = reverse_lazy('adminapp:categories_read')
     title = 'Админка|Редактирование категории'
 
 
-class CategoryDelete(SuperUserOnlyMixin, DataMixin, DeleteObjectMixin, DeleteView):
+class CategoryAdminDelete(SuperUserOnlyMixin, DataMixin, DeleteObjectMixin, DeleteView):
     model = Category
     success_url = reverse_lazy('adminapp:categories_read')
     title = 'Админка|Удаление категории'
+
+
+# CRUD для продуктов
+class ProductAdminRead(SuperUserOnlyMixin, DataMixin, ListView):
+    model = Product
+    title = 'Админка|Продукты'
+
+
+class ProductAdminCreate(SuperUserOnlyMixin, DataMixin, CreateView):
+    model = Product
+    form_class = AdminProductForm
+    success_url = reverse_lazy('adminapp:products_read')
+    title = 'Админка|Создание продукта'
+
+
+class ProductAdminUpdate(SuperUserOnlyMixin, DataMixin, UpdateView):
+    model = Product
+    form_class = AdminProductForm
+    success_url = reverse_lazy('adminapp:products_read')
+    title = 'Админка|Редактирование продукта'
+
+
+class ProductAdminDelete(SuperUserOnlyMixin, DataMixin, DeleteObjectMixin, DeleteView):
+    model = Product
+    success_url = reverse_lazy('adminapp:products_read')
+    title = 'Админка|Удаление продукта'
+
+
+class ProductAdminDetail(SuperUserOnlyMixin, DataMixin, DetailView):
+    model = Product
+    title = 'Админка|Продукт'

@@ -15,6 +15,10 @@
                            class="btn btn-primary">
                             редактировать
                         </a>
+                        <a href="{% url 'adminapp:products_read' %}"
+                           class="btn btn-info">
+                            товары категории
+                        </a>
                     {% else %}
                         <a href="{% url 'adminapp:category_delete' category.id %}"
                            class="btn btn-success">
