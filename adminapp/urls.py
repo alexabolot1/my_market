@@ -11,5 +11,6 @@ urlpatterns = [
 
     path('categories/', adminapp.CategoryRead.as_view(), name='categories_read'),
     path('category/create/', adminapp.CategoryCreate.as_view(), name='category_create'),
-    path('category/update/<int:pk>/', adminapp.CategoryUpdate.as_view(), name='category_update')
+    path('category/update/<int:pk>/', adminapp.CategoryUpdate.as_view(), name='category_update'),
+    path('category/delete/<int:pk>/', adminapp.CategoryDelete.as_view(), name='category_delete')
 ]

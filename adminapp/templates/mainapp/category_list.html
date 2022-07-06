@@ -6,14 +6,21 @@
         {% for category in category_list %}
             <div class="user_record {% if not category.is_active %}not_active{% endif %}">
                 <div class="user_role">
-                    <a href="{% url 'adminapp:category_update' category.pk %}"
-                       class="btn btn-primary">
-                        редактировать
-                    </a>
-                    <a href="{#% url 'myadmin:user_delete' category.pk %#}"
-                       class="btn btn-danger">
-                        удалить
-                    </a>
+                    {% if category.is_active %}
+                        <a href="{% url 'adminapp:category_delete' category.id %}"
+                           class="btn btn-danger">
+                            удалить
+                        </a>
+                        <a href="{% url 'adminapp:category_update' category.id %}"
+                           class="btn btn-primary">
+                            редактировать
+                        </a>
+                    {% else %}
+                        <a href="{% url 'adminapp:category_delete' category.id %}"
+                           class="btn btn-success">
+                            восстановить
+                        </a>
+                    {% endif %}
                 </div>
                 <div class="user_name">
                     <p><strong>{{ category.name }}</strong></p>
