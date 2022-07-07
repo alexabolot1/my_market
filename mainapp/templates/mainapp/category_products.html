@@ -12,7 +12,7 @@
                 <h2>Продукты категории "{{ category.name|upper }}"</h2>
             </div>
             <div class="related-products clearfix">
-                {% for item in products %}
+                {% for item in page_obj %}
                     <div class="block">
                         <a href="{% url 'mainapp:product_item' pk=item.pk %}">
                             <img src="/media/{{ item.image }}" alt="">
@@ -25,6 +25,31 @@
                     </div>
                 {% endfor %}
             </div>
+            {% if page_obj.has_other_pages %}
+                <nav class="list-pages">
+                    <ul>
+                        {% if page_obj.has_previous %}
+                            <li>
+                                <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+                            </li>
+                        {% endif %}
+                        {% for p in page_obj.paginator.page_range %}
+                            {% if page_obj.number == p %}
+                                <li class="page-num page-num-selected">{{ p }}</li>
+                            {% elif p >= page_obj.number|add:-1 and p <= page_obj.number|add:1 %}
+                                <li class="page_num">
+                                    <a href="?page={{ p }}">{{ p }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li>
+                                <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
