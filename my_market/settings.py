@@ -142,3 +142,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'authapp.CustomUser'
 
 LOGIN_URL = '/auth/login/'
+
+# Настройки для отправки электронного письма-потверждения
+DOMAIN_NAME = 'http://localhost:8000'
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'testalexit@yandex.ru'
+EMAIL_HOST_PASSWORD = 'ohbybunrhqxhjpnj'
+EMAIL_USE_TLS = True

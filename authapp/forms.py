@@ -1,3 +1,6 @@
+import hashlib
+import random
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django.forms import forms, HiddenInput
