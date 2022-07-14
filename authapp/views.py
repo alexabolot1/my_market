@@ -11,15 +11,6 @@ from authapp.forms import UserLoginForm, UserCreateForm, UserUpdateForm
 from authapp.models import CustomUser
 
 
-def verify(request, email, user_activation_key):
-    user = get_user_model().objects.filter(email=email).first()
-    if user.user_activation_key == user_activation_key and not user.is_activation_key_expires:
-        user.is_active = True
-        user.save()
-        auth.login(request, user)
-    return render(request, 'authapp/verification.html')
-
-
 def login(request):
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
@@ -64,6 +55,15 @@ def register(request):
         'form': user_form,
     }
     return render(request, 'authapp/register.html', context)
+
+
+def verify(request, email, user_activation_key):
+    user = get_user_model().objects.filter(email=email).first()
+    if user.user_activation_key == user_activation_key and not user.is_activation_key_expires:
+        user.is_active = True
+        user.save()
+        auth.login(request, user)
+    return render(request, 'authapp/verification.html')
 
 
 class UserUpdate(UpdateView):

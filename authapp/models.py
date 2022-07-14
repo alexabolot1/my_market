@@ -7,16 +7,14 @@ from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
 from django.db import models
 
-
 # Create your models here.
 from django.urls import reverse
-
+from django.utils.timezone import now
 
 
 class CustomUser(AbstractUser):
     avatar = models.ImageField(upload_to='user_photos/', blank=True, verbose_name='аватар')
     age = models.PositiveIntegerField(null=True, verbose_name='возраст')
-    registered = models.DateField(auto_now_add=True, null=True)
     user_activation_key = models.CharField(max_length=128, blank=True, verbose_name='ключ активации')
 
     class Meta:
@@ -26,7 +24,7 @@ class CustomUser(AbstractUser):
 
     @property
     def is_activation_key_expires(self):
-        return datetime.date.today() - self.registered > datetime.timedelta(hours=48)
+        return now() - self.date_joined > datetime.timedelta(hours=48)
 
     def set_activation_key(self):
         salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
