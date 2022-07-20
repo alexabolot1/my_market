@@ -57,7 +57,6 @@ def products(request):
     context = {
         'title': 'Продукты',
         'hot_product': hot_product,
-        'categories': get_category_menu(),
         'same_products': get_same_products(hot_product)
     }
     return render(request, 'mainapp/products.html', context)
@@ -75,7 +74,6 @@ def category(request, pk):
     page_obj = paginator.get_page(page_number)
     context = {
         'title': 'товары категории',
-        'categories': Category.objects.all(),
         'category': cat,
         'page_obj': page_obj,
     }
@@ -86,5 +84,5 @@ def product_item(request, pk):
     product = get_object_or_404(Product, pk=pk)
     context = {'product': product,
                'title': product.name,
-               'categories': get_category_menu()}
+               }
     return render(request, 'mainapp/product_item.html', context)

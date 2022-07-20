@@ -7,14 +7,12 @@
             >все</a>
         </li>
         {% for item in categories %}
-            {% if item.is_active %}
                 <li>
                     <a href="{% url 'mainapp:category' item.pk %}"
                        class="{% if request.resolver_match.kwargs.pk == item.pk and request.resolver_match.url_name != 'product_item' %}
                    active{% endif %}"
                     >{{ item.name }}</a>
                 </li>
-            {% endif %}
         {% endfor %}
     </ul>
 </div>
