@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,14 +23,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '_=_nzhkvm0c_ecm#5y7$u+z&k$)$387$6i7u8_58u^p8_k9s6!'
 
+# reading .env file
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'social_django',
     'mainapp',
     'authapp',
     'basketapp',
@@ -66,7 +73,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'mainapp.context_processors.categories'
+                'mainapp.context_processors.categories',
+                # 'social_django.context_processors.backends'
             ],
         },
     },
@@ -74,29 +82,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'my_market.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-
-    # 'default': {
-    #     'NAME': 'market_prj_db',
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'USER': 'prj_user',
-    #     'PASSWORD': 'prj_user',
-    #     'HOST': 'localhost',
-    #     'PORT': '5434',
-    # }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -146,9 +137,14 @@ LOGIN_URL = '/auth/login/'
 
 # Настройки для отправки электронного письма-потверждения
 DOMAIN_NAME = 'http://localhost:8000'
-
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'testalexit@yandex.ru'
-EMAIL_HOST_PASSWORD = 'ohbybunrhqxhjpnj'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
+
+# Настройка для авторизации через VK
+# AUTHENTICATION_BACKENDS = (
+#     'social_core.backends.vk.VKOAuth2',
+#     'django.contrib.auth.backends.ModelBackend',
+# )
