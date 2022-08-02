@@ -8,7 +8,8 @@ urlpatterns = [
     path('', include('mainapp.urls', namespace='mainapp')),
     path('auth/', include('authapp.urls', namespace='auth')),
     path('basket/', include('basketapp.urls', namespace='basket')),
-    path('my/admin/', include('adminapp.urls', namespace='adminapp'))
+    path('my/admin/', include('adminapp.urls', namespace='adminapp')),
+    path('', include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:

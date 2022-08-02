@@ -58,6 +58,10 @@ def register(request):
 
 
 def verify(request, email, user_activation_key):
+    """
+    Получает пользователя по email, проверяет совпадает ли код авторизации из ссылки
+    с user_activation_key пользователя и не истекло ли время для авторизации
+    """
     user = get_user_model().objects.filter(email=email).first()
     if user.user_activation_key == user_activation_key and not user.is_activation_key_expires:
         user.is_active = True
