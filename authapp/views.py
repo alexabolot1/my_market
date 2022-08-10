@@ -1,14 +1,16 @@
 from django.contrib import auth
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.forms import forms
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView
 
-from authapp.forms import UserLoginForm, UserCreateForm, UserUpdateForm
-from authapp.models import CustomUser
+from authapp.forms import UserLoginForm, UserCreateForm, UserUpdateForm, UserProfileUpdateForm
+from authapp.models import CustomUser, CustomUserProfile
 
 
 def login(request):
@@ -66,16 +68,37 @@ def verify(request, email, user_activation_key):
     if user.user_activation_key == user_activation_key and not user.is_activation_key_expires:
         user.is_active = True
         user.save()
-        auth.login(request, user)
+        auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
     return render(request, 'authapp/verification.html')
 
 
-class UserUpdate(UpdateView):
-    form_class = UserUpdateForm
-    model = CustomUser
-    success_url = reverse_lazy('mainapp:index')
+def update(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, request.FILES,
+                              instance=request.user)
+        profile_form = UserProfileUpdateForm(request.POST, request.FILES,
+                                             instance=request.user.customuserprofile)
+        if form.is_valid() and profile_form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('mainapp:index'))
+    else:
+        form = UserUpdateForm(instance=request.user)
+        profile_form = UserProfileUpdateForm(instance=request.user.customuserprofile)
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'редактирование пользователя'
-        return context
+    context = {
+        'page_title': 'редактирование',
+        'form': form,
+        'profile_form': profile_form,
+    }
+    return render(request, 'authapp/update.html', context)
+
+
+@receiver(post_save, sender=CustomUser)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        CustomUserProfile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=CustomUser)
+def save_user_profile(sender, instance, **kwargs):
+    instance.customuserprofile.save()

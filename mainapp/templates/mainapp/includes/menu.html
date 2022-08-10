@@ -12,7 +12,7 @@
         <li><a href="{% url 'mainapp:contacts' %}"
                class="{% if request.resolver_match.url_name == 'contacts' %}active{% endif %}">контакты</a>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'auth:update' user.pk %}">{{ user.username }}</a></li>
+                <li><a href="{% url 'auth:update' %}">{{ user.username }}</a></li>
                 {% if user.is_superuser %}
                     <li><a href="{% url 'adminapp:users_read' %}">Админка</a></li>
                 {% endif %}

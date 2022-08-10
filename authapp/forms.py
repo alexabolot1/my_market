@@ -3,7 +3,9 @@ import random
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
-from django.forms import forms, HiddenInput
+from django.forms import forms, HiddenInput, ModelForm
+
+from authapp.models import CustomUserProfile
 
 
 class AgeValidateMixin:
@@ -46,3 +48,17 @@ class UserUpdateForm(AgeValidateMixin, UserChangeForm):
                 continue
             field.widget.attrs['class'] = f'form-control {field_name}'
             field.help_text = ''
+
+
+class UserProfileUpdateForm(ModelForm):
+    class Meta:
+        model = CustomUserProfile
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field_name == 'user':
+                field.widget = HiddenInput()
+                continue
+            field.widget.attrs['class'] = f'form-control {field_name}'

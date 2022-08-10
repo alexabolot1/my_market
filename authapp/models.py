@@ -60,3 +60,18 @@ class CustomUser(AbstractUser):
         :return: количество товаров в корзине пользователя
         """
         return sum(item.quantity for item in self.basket.all())
+
+
+class CustomUserProfile(models.Model):
+    MALE = 'M'
+    FEMALE = 'W'
+
+    GENDER_CHOICES = (
+        (MALE, 'мужской'),
+        (FEMALE, 'женский')
+    )
+
+    user = models.OneToOneField(CustomUser, primary_key=True, on_delete=models.CASCADE)
+    tagline = models.CharField(max_length=126, blank=True, verbose_name='теги')
+    about_me = models.TextField(blank=True, verbose_name='о себе')
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name='пол')
