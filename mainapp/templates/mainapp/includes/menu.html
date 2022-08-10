@@ -12,7 +12,26 @@
         <li><a href="{% url 'mainapp:contacts' %}"
                class="{% if request.resolver_match.url_name == 'contacts' %}active{% endif %}">контакты</a>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'auth:update' %}">{{ user.username }}</a></li>
+                <li>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                            {{ user.username|default:"пользователь"|title }}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{% url 'auth:update' %}">
+                                    профиль
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{#% url 'orders:index' %#}">
+                                    заказы
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 {% if user.is_superuser %}
                     <li><a href="{% url 'adminapp:users_read' %}">Админка</a></li>
                 {% endif %}
