@@ -3,7 +3,7 @@ from authapp.models import CustomUser
 
 
 class Command(BaseCommand):
-    help = u'Create superuser'
+    help = 'Создание супер пользователя'
 
     def handle(self, *args, **kwargs):
         CustomUser.objects.create_superuser(username='alex', email='alex@mail.com', password='django')
