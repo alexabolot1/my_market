@@ -23,17 +23,17 @@
             {% for item in object_list %}
                 <tr>
                     <td class="td1 orders_list">{{ item.pk }}</td>
-                    <td>{{ item.add_dt|date:"Y-m-d H:i:s" }}</td>
-                    <td>{{ item.update_dt|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ item.create_data|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ item.update_data|date:"Y-m-d H:i:s" }}</td>
                     <td>{{ item.get_status_display }}</td>
                     <td>
-                        <a href="{#% url 'orders:order_read' item.pk %#}">
+                        <a href="{% url 'ordersapp:order_detail' item.pk %}">
                             посмотреть
                         </a>
                     </td>
                     <td>
                         {% if item.is_forming %}
-                            <a href="{#% url 'orders:update' pk=item.pk %#}">
+                            <a href="{% url 'ordersapp:order_update' pk=item.pk %}">
                                 редактировать
                             </a>
                         {% endif %}

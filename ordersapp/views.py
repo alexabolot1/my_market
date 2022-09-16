@@ -2,7 +2,7 @@ from django.db import transaction
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
 from ordersapp.forms import OrderForm, OrderItemForm
 from ordersapp.models import Order, OrderItem
@@ -43,6 +43,7 @@ class OrderCreate(CreateView):
     def form_valid(self, form):
         context = self.get_context_data()
         orderitems = context['orderitems']
+
         with transaction.atomic():
             order = super().form_valid(form)
             if orderitems.is_valid():
@@ -52,3 +53,49 @@ class OrderCreate(CreateView):
         if self.object.total_cost == 0:
             self.object.delete()
         return order
+
+
+class OrderUpdate(UpdateView):
+    model = Order
+    form_class = OrderForm
+    success_url = reverse_lazy('ordersapp:order_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        OrderFormSet = inlineformset_factory(Order,
+                                             OrderItem,
+                                             form=OrderItemForm,
+                                             extra=1)
+        if self.request.POST:
+            formset = OrderFormSet(self.request.POST,
+                                   self.request.FILES,
+                                   instance=self.object)
+        else:
+            formset = OrderFormSet(instance=self.object)
+            for form in formset.forms:
+                instance = form.instance
+                if instance.pk:
+                    form.initial['price'] = instance.product.price
+        context['orderitems'] = formset
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        orderitems = context['orderitems']
+        with transaction.atomic():
+            order = super().form_valid(form)
+            if orderitems.is_valid():
+                orderitems.save()
+        # удаляем пустой заказ
+        if self.object.total_cost == 0:
+            self.object.delete()
+        return order
+
+
+class OrderDetail(DetailView):
+    model = Order
+
+
+class OrderDelete(DeleteView):
+    model = Order
+    success_url = reverse_lazy('ordersapp:order_list')

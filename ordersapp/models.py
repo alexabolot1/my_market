@@ -18,7 +18,7 @@ class Order(models.Model):
         (SENT, 'отправлен'),
     )
 
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='orders')
     create_data = models.DateTimeField(auto_now_add=True, verbose_name='дата создания')
     update_data = models.DateTimeField(auto_now=True, verbose_name='дата обновления')
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name='статус', default=FORMING)
@@ -39,7 +39,7 @@ class Order(models.Model):
 
     @property
     def total_cost(self):
-        return sum(map(lambda x: x.quantity, self.orderitems.all()))
+        return sum(map(lambda x: x.product_cost, self.orderitems.all()))
 
     def delete(self, using=None, keep_parents=False):
         self.is_active = False
