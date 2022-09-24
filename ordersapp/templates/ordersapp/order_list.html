@@ -21,31 +21,33 @@
             </thead>
             <tbody>
             {% for item in object_list %}
-                <tr>
-                    <td class="td1 orders_list">{{ item.pk }}</td>
-                    <td>{{ item.create_data|date:"Y-m-d H:i:s" }}</td>
-                    <td>{{ item.update_data|date:"Y-m-d H:i:s" }}</td>
-                    <td>{{ item.get_status_display }}</td>
-                    <td>
-                        <a href="{% url 'ordersapp:order_detail' item.pk %}">
-                            посмотреть
-                        </a>
-                    </td>
-                    <td>
-                        {% if item.is_forming %}
-                            <a href="{% url 'ordersapp:order_update' pk=item.pk %}">
-                                редактировать
+                {% if item.is_active %}
+                    <tr>
+                        <td class="td1 orders_list">{{ item.pk }}</td>
+                        <td>{{ item.create_data|date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ item.update_data|date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ item.get_status_display }}</td>
+                        <td>
+                            <a href="{% url 'ordersapp:order_detail' item.pk %}">
+                                посмотреть
                             </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if item.is_forming %}
-                            <a href="{#% url 'orders:order_delete' item.pk %#}">
-                                удалить
-                            </a>
-                        {% endif %}
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            {% if item.is_forming %}
+                                <a href="{% url 'ordersapp:order_update' pk=item.pk %}">
+                                    редактировать
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.is_forming %}
+                                <a href="{% url 'ordersapp:order_delete' item.pk %}">
+                                    удалить
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>

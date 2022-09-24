@@ -42,6 +42,9 @@ class Order(models.Model):
         return sum(map(lambda x: x.product_cost, self.orderitems.all()))
 
     def delete(self, using=None, keep_parents=False):
+        for item in self.orderitems.all():
+            item.product.stock += item.quantity
+            item.product.save()
         self.is_active = False
         self.save()
 
