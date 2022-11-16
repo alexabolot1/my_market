@@ -1,0 +1,12 @@
+[Unit]
+Description=market daemon
+After=network.target
+
+[Service]
+User=alexabolot
+Group=www-data
+WorkingDirectory=/home/alexabolot/my_market
+ExecStart=/usr/bin/gunicorn3 --access-logfile server.logs --workers 2 --bind unix:/home/alexabolot/my_market/my_market.sock my_market.wsgi
+
+[Install]
+WantedBy=multi-user.target

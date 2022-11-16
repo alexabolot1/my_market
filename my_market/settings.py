@@ -20,9 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_=_nzhkvm0c_ecm#5y7$u+z&k$)$387$6i7u8_58u^p8_k9s6!'
-
 # reading .env file
 env = environ.Env(
     # set casting, default value
@@ -30,7 +27,8 @@ env = environ.Env(
 )
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = env('SECRET_KEY')
+
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
